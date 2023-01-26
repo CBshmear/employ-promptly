@@ -1,7 +1,7 @@
 # employ-promptly
 
 ## Description
-
+This repository contains all the code for a command line employee management app! I wanted to create a simple app that solves many problems for the user. Now its easy to mange departments, roles and people all from the command line. get quick facts like employee salary, or total budget for each department. I ran into some trouble with the promise based functions but was able to sort it all out by referencing the documentation for MYSQL database queries. Throughout this build i learned how to better apply async/await properties to functions.
 ## Installation
 The package.json should have all the necessary dependencies.  Run the command "npm i" in the terminal.
 
