@@ -14,4 +14,5 @@ VALUES ("Service Tech", 80000, 1),
 
 INSERT INTO employees (first_name, last_name, role_id)
 VALUES ("Connor","Beer",1),
-       ("Jimmy", "Johnson",3);
+       ("Jimmy", "Johnson",3),
+       ("Johnny", "Cochrane", 3);

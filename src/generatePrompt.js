@@ -1,6 +1,8 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const {
+  empByDept,
+  deptBudget,
   updateEmployeeRole,
   addRole,
   quit,
@@ -27,6 +29,7 @@ function askPrompt() {
           "Add Role",
           "View all Departments",
           "Add Department",
+          "Department Budget",
           "Quit",
         ],
       },
@@ -52,6 +55,9 @@ function askPrompt() {
         askPrompt();
       } else if (answers.chooseAction === "Add Department") {
         await addDept();
+        askPrompt();
+      } else if (answers.chooseAction === "Department Budget") {
+        await deptBudget();
         askPrompt();
       } else if (answers.chooseAction === "Quit") {
         quit();

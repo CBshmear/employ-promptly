@@ -56,7 +56,7 @@ async function addRole() {
   const depts = rows.map((item) => {
     return { name: item.department_name, value: item.id };
   });
-  console.log(depts);
+
   await inquirer
     .prompt([
       {
@@ -113,7 +113,6 @@ async function addEmployee() {
   const roles = rows.map((item) => {
     return { name: item.title, value: item.id };
   });
-  console.log(roles);
 
   await inquirer
     .prompt([
@@ -149,11 +148,17 @@ async function addEmployee() {
 
 async function updateEmployeeRole() {
   await get_db_conn();
+
   const [rows, fields] = await db.query("SELECT * from employees;");
   const emps = rows.map((item) => {
     return { name: item.first_name, value: item.id };
   });
-  console.log(emps);
+
+  const [row, field] = await db.query("SELECT * from roles;");
+  const roles = row.map((item) => {
+    return { name: item.title, value: item.id };
+  });
+
   await inquirer
     .prompt([
       {
@@ -162,12 +167,42 @@ async function updateEmployeeRole() {
         name: "updatedEmp",
         choices: emps,
       },
+      {
+        type: "list",
+        message: "What role would you like to switch to",
+        name: "newRole",
+        choices: roles,
+      },
     ])
     .then((answer) => {
+      const newRole = answer.newRole;
+      const updatedEmp = answer.updatedEmp;
+      /*
+        answers: { "itemId": 10, "price": 9.99 }
+        `UPDATE items SET price = ${answers.price} WHERE id = ${answers.itemId}`
+      */
+
       const query = db.query(
-        "UPDATE employees SET role_id = new_role_id FROM employees JOIN roles ON employees.role_id = roles.id WHERE employees.id = employee_id;"
+        `UPDATE employees SET role_id = ${newRole}  WHERE employees.id = ${updatedEmp};`
       );
+      return query;
     });
+}
+
+async function empByDept() {
+  await get_db_conn();
+  query = await db.query(
+    "SELECT departments.department_name as department_name, employees.first_name, employees.last_name FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id ORDER BY departments.department_name;"
+  );
+  return console.table(query);
+}
+
+async function deptBudget() {
+  await get_db_conn();
+  const [rows, fields] = await db.query(
+    "SELECT departments.department_name, SUM(roles.salary) as total_salary FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id GROUP BY departments.department_name;"
+  );
+  console.table(rows);
 }
 
 function quit() {
@@ -175,12 +210,14 @@ function quit() {
 }
 
 module.exports = {
+  deptBudget,
   addRole,
   updateEmployeeRole,
   quit,
   addDept,
   addEmployee,
   viewAllEmp,
+  empByDept,
   viewAllRoles,
   viewAllDept,
 };
