@@ -7,6 +7,9 @@ The package.json should have all the necessary dependencies.  Run the command "n
 
 ## Usage
 to intialize the application run the command "npm start" in the terminal.
+Here is a link to a walkthrough video of the application in action.
+https://drive.google.com/file/d/1-eyU_Nw4Wad8egTLP0zoZpZe09hhLSju/view
+
 
 ## Credits
 Referenced mysql documentation a ton 
